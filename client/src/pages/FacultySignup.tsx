@@ -20,11 +20,10 @@ export default function SignUp() {
   const [otpSent, setOtpSent] = useState(false)
   const [type,setType] = useState('password')
 
-
   const handleSignup = async () => {
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/v1/user/signup", {
+      const res = await fetch("http://localhost:3000/api/faculty/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, username, password }),
@@ -50,7 +49,7 @@ export default function SignUp() {
   const handleVerifyOtp = async () => {
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/v1/user/verify-otp", {
+      const res = await fetch("http://localhost:3000/api/faculty/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -165,7 +164,7 @@ export default function SignUp() {
           <Button
             variant="link"
             className="text-blue-600 hover:text-blue-800"
-            onClick={() => navigate("/user/signin")}
+            onClick={() => navigate("/signin")}
           >
             Already have an account? Login
           </Button>
