@@ -5,6 +5,7 @@ const FacultySchema = new Schema({
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
+    subject : {type: String , required:true},
     otp: String,
     otpExpiry: Date,
     isVerified: { type: Boolean, default: false }
