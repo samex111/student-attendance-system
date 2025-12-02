@@ -21,7 +21,7 @@ export default function AdminSignin() {
   const handleSignIn = async () => {
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/faculty/signin", {
+      const res = await fetch("http://localhost:3000/api/admin/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifire: identifier, password: password,secretkey:secretkey }),
@@ -33,7 +33,7 @@ export default function AdminSignin() {
 
       if (res.ok) {
         alert("Signin successful ✅")
-        navigate("/dashboard")
+        navigate("/admin/dashboard")
       } else {
         alert(data.msg || "Signin failed ❌")
       }

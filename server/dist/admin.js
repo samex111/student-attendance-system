@@ -149,3 +149,40 @@ exports.AdminRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void
         });
     }
 }));
+exports.AdminRouter.post('/add/student', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const requireBody = zod_1.default.object({
+        firstName: zod_1.default.string(),
+        lastName: zod_1.default.string(),
+        rollNo: zod_1.default.number(),
+        branch: zod_1.default.string(),
+        year: zod_1.default.number(),
+        batch: zod_1.default.string(),
+        email: zod_1.default.email()
+    });
+    const parseData = requireBody.safeParse(req.body);
+    if (!parseData.success) {
+        return res.status(400).json({
+            msg: "Error in adding student : " + parseData.error
+        });
+    }
+    const { firstName, lastName, rollNo, branch, year, batch, email } = parseData.data;
+    try {
+        const response = yield schema_js_1.StudentModel.create({
+            firstName,
+            lastName,
+            rollNo,
+            branch,
+            year,
+            batch,
+            email
+        });
+        res.status(200).json({
+            msg: "Student created: " + response.firstName
+        });
+    }
+    catch (e) {
+        res.status(400).json({
+            msg: "Eroor in catch adding student: " + e
+        });
+    }
+}));

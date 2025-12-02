@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import noadmailer from 'nodemailer';
-import { AdminModel } from "./schema.js";
+import { AdminModel, StudentModel } from "./schema.js";
 import crypto from 'crypto';
 
 
@@ -174,6 +174,44 @@ AdminRouter.post('/signin', async (req: Request, res: Response) => {
         res.status(403).json({
             // Error message for failed password comparison
             message: "Invalid credentials!"
+        })
+    }
+})
+
+AdminRouter.post('/add/student',async(req:Request,res:Response)=>{
+    const requireBody = z.object({
+    firstName:z.string(),
+    lastName:z.string(),
+    rollNo:z.number(),
+    branch:z.string(),
+    year:z.number(),
+    batch:z.string(),
+    email: z.email()
+    });
+    const parseData = requireBody.safeParse(req.body);
+    if(!parseData.success){
+        return res.status(400).json({
+            msg: "Error in adding student : " + parseData.error
+        })
+    }
+    const {firstName,lastName,rollNo,branch,year,batch,email} = parseData.data;
+
+    try{
+       const response =  await StudentModel.create({
+            firstName,
+            lastName,
+            rollNo,
+            branch,
+            year,
+            batch,
+            email
+        })
+        res.status(200).json({
+            msg:"Student created: " + response.firstName
+        })
+    }catch(e){
+        res.status(400).json({
+            msg:"Eroor in catch adding student: "+e
         })
     }
 })
