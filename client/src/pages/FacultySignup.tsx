@@ -182,21 +182,7 @@ export default function SignUp() {
               : <EyeOff onClick={()=>setType("password")}  className="absolute right-3 top-2.5 h-5 w-5 text-gray-500"/>}
           </div>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Subject</Label>
-            <div className="relative">
-
-              <BookOpen  className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-            <Input
-              id="text"
-              type="text"
-              placeholder="Enter subject.."
-                className="pl-10"
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-            </div>
-          </div>
+        
 
           {/* OTP Field (show only after signup) */}
           {otpSent && (

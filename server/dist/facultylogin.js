@@ -35,6 +35,9 @@ exports.facultyRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, vo
     const requireBody = zod_1.default.object({
         email: zod_1.default.email(),
         password: zod_1.default.string().min(8).max(20),
+        subject: zod_1.default.string(),
+        firstName: zod_1.default.string(),
+        lastName: zod_1.default.string(),
         username: zod_1.default.string().min(1).max(50)
     });
     const parseData = requireBody.safeParse(req.body);
@@ -44,7 +47,7 @@ exports.facultyRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, vo
             error: parseData.error
         });
     }
-    const { email, password, username } = req.body;
+    const { email, password, username, subject, firstName, lastName } = req.body;
     const hassedPassword = yield bcryptjs_1.default.hash(password, 5);
     const otp = crypto_1.default.randomInt(100000, 999999).toString();
     try {
@@ -52,6 +55,9 @@ exports.facultyRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, vo
             email: email,
             username: username,
             password: hassedPassword,
+            subject: subject,
+            firstName: firstName,
+            lastName: lastName,
             otp,
             otpExpiry: Date.now() + 5 * 60 * 1000
         });
