@@ -35,6 +35,8 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
       email: z.email(),
         password: z.string().min(8).max(20),
         subject: z.string(),
+        firstName: z.string(),
+        lastName: z.string(),
         username: z.string().min(1).max(50)
     });
 
@@ -47,7 +49,7 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
         })
     }
 
-    const { email, password, username , subject} = req.body;
+    const { email, password, username , subject , firstName , lastName} = req.body;
 
     const hassedPassword = await bcrypt.hash(password, 5);
 
@@ -61,6 +63,8 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
             username: username,
             password: hassedPassword,
             subject:subject,
+            firstName:firstName,
+            lastName:lastName,
             otp,
             otpExpiry: Date.now() + 5 * 60 * 1000
         })

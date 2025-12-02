@@ -29,7 +29,7 @@ export default function SignUp() {
       const res = await fetch("http://localhost:3000/api/faculty/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password , subject}),
+        body: JSON.stringify({ email:email, username:username, password:password ,subject: subject , firstName: firstName , lastName:lastName}),
       })
 
       const data = await res.json()
