@@ -1,6 +1,15 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
+const AdminSchema = new Schema({
+    username: { type: String, unique: true, required: true },
+    email: { type: String, unique: true, required: true },
+    password: { type: String, required: true },
+    secretkey:{type:String, required:true},
+    otp: String,
+    otpExpiry: Date,
+    isVerified: { type: Boolean, default: false }
+});
 const FacultySchema = new Schema({
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
@@ -23,4 +32,5 @@ const StudentSchema = new Schema({
 });
 
 export const FacultyModel =  mongoose.model('faculty',FacultySchema);
+export const AdminModel =  mongoose.model('admin',AdminSchema);
 export const StudentModel =  mongoose.model('student-details',StudentSchema);
