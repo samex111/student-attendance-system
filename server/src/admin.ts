@@ -29,14 +29,12 @@ const transporter = noadmailer.createTransport({
 });
 
 
-AdminRouter.post('/admin/signup', async (req: Request, res: Response) => {
+AdminRouter.post('/signup', async (req: Request, res: Response) => {
     const requireBody = z.object({
-      email: z.email(),
-        password: z.string().min(8).max(20),
-        subject: z.string(),
-        firstName: z.string(),
-        lastName: z.string(),   
-        username: z.string().min(1).max(50)
+        email: z.email(),
+        password: z.string().min(8).max(20),  
+        username: z.string().min(1).max(50),
+        secretkey : z.string()
     });
 
     const parseData = requireBody.safeParse(req.body);
@@ -48,7 +46,7 @@ AdminRouter.post('/admin/signup', async (req: Request, res: Response) => {
         })
     }
 
-    const { email, password, username , subject , firstName , lastName} = req.body;
+    const { email, password, username , secretkey} = req.body;
 
     const hassedPassword = await bcrypt.hash(password, 5);
 
@@ -61,7 +59,7 @@ AdminRouter.post('/admin/signup', async (req: Request, res: Response) => {
             email: email,
             username: username,
             password: hassedPassword,
-            secretkey:process.env.ADMIN_SECRET,
+            secretkey: secretkey,
             otp,
             otpExpiry: Date.now() + 5 * 60 * 1000
         })
@@ -86,7 +84,7 @@ AdminRouter.post('/admin/signup', async (req: Request, res: Response) => {
     })
 
 });
-AdminRouter.post("/admin/verify-otp", async (req, res) => {
+AdminRouter.post("/verify-otp", async (req, res) => {
     const { email, otp } = req.body;
 
     const user = await AdminModel.findOne({ email });
@@ -116,11 +114,12 @@ AdminRouter.post("/admin/verify-otp", async (req, res) => {
 });
 
 
-AdminRouter.post('/admin/signin', async (req: Request, res: Response) => {
+AdminRouter.post('/signin', async (req: Request, res: Response) => {
 
     const requireBody = z.object({
         identifire: z.string(),
-        password: z.string().min(8)
+        password: z.string().min(8),
+         secretkey : z.string()
     });
 
     const parseData = requireBody.safeParse(req.body);
@@ -134,12 +133,17 @@ AdminRouter.post('/admin/signin', async (req: Request, res: Response) => {
 
 
 
-    const { identifire, password } = req.body;
+    const { identifire, password ,  secretkey } = req.body;
 
     const user = await AdminModel.findOne({ $or: [{ username: identifire }, { email: identifire }] });
     if (!user || !user.password) {
         return res.status(403).json({
             message: "Incorrect Credentials !"
+        });
+    }
+    if(secretkey !== user.secretkey){
+        return res.status(403).json({
+            message: "wrong secret key!"
         });
     }
     if (user.isVerified == false) {

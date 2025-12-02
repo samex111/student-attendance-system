@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./db.js";
 import {facultyRouter} from './facultylogin.js'
+import { AdminRouter } from "./admin.js";
 
 
 
@@ -16,6 +17,7 @@ app.use(cors({
 app.use(express.json()); 
 connectDB();
 app.use('/api/faculty',facultyRouter)
+app.use('/api/admin',AdminRouter)
 app.get("/", (req, res) => { 
   res.json({ message: "Backend running!" });
 }); 
