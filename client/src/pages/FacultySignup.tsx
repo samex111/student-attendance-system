@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label" // ✅ correct import (not from radix directly)
-import { Eye, Mail,BookOpen  } from 'lucide-react';
+import { Eye, Mail,BookOpen,UserRound  } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
 import { User, Lock, Loader2 } from "lucide-react"
 
@@ -16,6 +16,8 @@ export default function SignUp() {
   const [password, setPassword] = useState("")
   const [otp, setOtp] = useState("")
   const [username, setUsername] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [subject, setSubject] = useState("")
   const [loading, setLoading] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
@@ -115,6 +117,51 @@ export default function SignUp() {
             />
             </div>
 
+          </div>
+             <div className="space-y-2">
+            <Label htmlFor="password">First Name</Label>
+            <div className="relative">
+
+              <BookOpen  className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+            <Input
+              id="text"
+              type="text"
+              placeholder="Enter first name.."
+                className="pl-10"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            </div>
+          </div>
+             <div className="space-y-2">
+            <Label htmlFor="password">First Name</Label>
+            <div className="relative">
+
+              <UserRound   className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+            <Input
+              id="text"
+              type="text"
+              placeholder="Enter last name"
+                className="pl-10"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+            </div>
+          </div>
+             <div className="space-y-2">
+            <Label htmlFor="password">Subject</Label>
+            <div className="relative">
+
+              <UserRound   className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+            <Input
+              id="text"
+              type="text"
+              placeholder="Enter subject.."
+                className="pl-10"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+            />
+            </div>
           </div>
 
           {/* Password */}
