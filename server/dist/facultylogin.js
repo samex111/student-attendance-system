@@ -22,7 +22,7 @@ const nodemailer_1 = __importDefault(require("nodemailer"));
 const schema_js_1 = require("./schema.js");
 const crypto_1 = __importDefault(require("crypto"));
 dotenv_1.default.config();
-const JWT_USER = process.env.JWT_FACULTY;
+const JWT_FACULTY = process.env.JWT_FACULTY;
 exports.facultyRouter = (0, express_1.Router)();
 const transporter = nodemailer_1.default.createTransport({
     service: 'gmail',
@@ -129,7 +129,7 @@ exports.facultyRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, vo
     if (passwordMatch) {
         const token = jsonwebtoken_1.default.sign({
             id: user._id
-        }, JWT_USER);
+        }, JWT_FACULTY);
         res.cookie('token', token, {
             httpOnly: true,
             secure: false,

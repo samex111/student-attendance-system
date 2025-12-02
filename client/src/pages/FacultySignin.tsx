@@ -23,10 +23,10 @@ export default function Signin() {
       const res = await fetch("http://localhost:3000/api/faculty/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifire: identifier, password }),
+        body: JSON.stringify({ identifire: identifier, password: password }),
         credentials: "include",
       })
-
+        
       const data = await res.json()
       localStorage.setItem("StudentID", data.studentId)
 
@@ -38,9 +38,10 @@ export default function Signin() {
       }
     } catch (e) {
       console.error(e)
-      alert("Error during signin")
+      alert("Error during signin : " + e)
     } finally {
       setLoading(false)
+      console.log("identifire: ",identifier)
     }
   }
 

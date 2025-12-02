@@ -8,7 +8,12 @@ const cors_1 = __importDefault(require("cors"));
 const db_js_1 = require("./db.js");
 const facultylogin_js_1 = require("./facultylogin.js");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "http://localhost:5173", // frontend ka exact origin
+    credentials: true,
+    methods: ["GET", "DELETE", "POST", "PUT"],
+    allowedHeaders: ["Content-Type"]
+}));
 app.use(express_1.default.json());
 (0, db_js_1.connectDB)();
 app.use('/api/faculty', facultylogin_js_1.facultyRouter);

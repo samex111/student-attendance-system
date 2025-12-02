@@ -13,7 +13,7 @@ import crypto from 'crypto';
 
 dotenv.config();
 
-const JWT_USER = process.env.JWT_FACULTY as string;
+const JWT_FACULTY = process.env.JWT_FACULTY as string;
 
 export const facultyRouter = Router();
 
@@ -157,7 +157,7 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
     if (passwordMatch) {
         const token = jwt.sign({
             id: user._id
-        }, JWT_USER)
+        }, JWT_FACULTY)
 
         res.cookie('token', token, {
             httpOnly: true,
