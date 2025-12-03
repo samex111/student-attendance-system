@@ -34,7 +34,7 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
     const requireBody = z.object({
       email: z.email(),
         password: z.string().min(8).max(20),
-        subject: z.string(),
+        subject: z.string().array(),
         firstName: z.string(),
         lastName: z.string(),
         username: z.string().min(1).max(50)
@@ -186,9 +186,9 @@ facultyRouter.get('/get/student/:branch', async (req: Request, res: Response) =>
     if (!students || students.length === 0) {
       return res.status(404).json({ success: false, msg: 'No students found for this branch' });
     }
-    const data = students.map((i)=>i.firstName) ;
 
-    return res.status(200).json({ success: true, data: data });
+
+    return res.status(200).json({ success: true, data: students });
   } catch (err: any) {
     console.error('Error in get student:', err);
     return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
