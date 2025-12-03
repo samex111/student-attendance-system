@@ -147,3 +147,18 @@ exports.facultyRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, vo
         });
     }
 }));
+exports.facultyRouter.get('/get/student/:branch', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { branch } = req.params;
+    try {
+        const students = yield schema_js_1.StudentModel.find({ branch });
+        if (!students || students.length === 0) {
+            return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+        }
+        const data = students.map((i) => i.firstName);
+        return res.status(200).json({ success: true, data: data });
+    }
+    catch (err) {
+        console.error('Error in get student:', err);
+        return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+    }
+}));

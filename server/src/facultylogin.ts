@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import noadmailer from 'nodemailer';
 import { facultyMiddleware } from "./auth.js";
-import { FacultyModel } from "./schema.js";
+import { FacultyModel, StudentModel } from "./schema.js";
 import crypto from 'crypto';
 
 
@@ -176,3 +176,22 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
         })
     }
 })
+
+facultyRouter.get('/get/student/:branch', async (req: Request, res: Response) => {
+  const { branch } = req.params;
+
+  try {
+    const students = await StudentModel.find({ branch });
+
+    if (!students || students.length === 0) {
+      return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+    }
+    const data = students.map((i)=>i.firstName) ;
+
+    return res.status(200).json({ success: true, data: data });
+  } catch (err: any) {
+    console.error('Error in get student:', err);
+    return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+  }
+});
+

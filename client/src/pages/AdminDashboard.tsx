@@ -24,12 +24,18 @@ function AddStudent(){
 
     try{
         async function handleSubmit(){
-            const res = await fetch('',{
+            const res = await fetch('http://localhost:3000/api/admin/add/student',{
                 method:"POST",
                 headers:{'Content-Type':'application/json'},
                 credentials:"include",
                 body:JSON.stringify({
-                    
+                    firstName,
+                    lastName,
+                    email,
+                    batch,
+                    branch,
+                    rollNo,
+                    year
                 })
             })
         }
