@@ -192,7 +192,6 @@ exports.AdminRouter.post('/add/subject', (req, res) => __awaiter(void 0, void 0,
         code: zod_1.default.string(),
         year: zod_1.default.number(),
         sem: zod_1.default.number(),
-        facultyId: zod_1.default.string(),
         slot: zod_1.default.number()
     });
     const parseData = requireBody.safeParse(req.body);
@@ -201,14 +200,13 @@ exports.AdminRouter.post('/add/subject', (req, res) => __awaiter(void 0, void 0,
             msg: "Error in adding student : " + parseData.error
         });
     }
-    const { name, code, sem, year, facultyId, slot } = parseData.data;
+    const { name, code, sem, year, slot } = parseData.data;
     try {
         const response = yield schema_js_1.SubjectModel.create({
             name,
             code,
             sem,
             year,
-            facultyId,
             slot
         });
         res.status(200).json({
@@ -258,4 +256,48 @@ exports.AdminRouter.post("/create/faculty", (req, res) => __awaiter(void 0, void
     res.status(200).json({
         msg: "User created successfully!"
     });
+}));
+exports.AdminRouter.get('/get/students', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // MongoDB sorts by rollNo ascending
+        const students = yield schema_js_1.StudentModel.aggregate([
+            { $sort: { branch: 1, rollNo: 1 } },
+            {
+                $group: {
+                    _id: "$branch",
+                    students: { $push: "$$ROOT" }
+                }
+            }
+        ]);
+        if (!students || students.length === 0) {
+            return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+        }
+        return res.status(200).json({ success: true, data: students });
+    }
+    catch (err) {
+        console.error('Error in get student:', err);
+        return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+    }
+}));
+exports.AdminRouter.get('/get/faculties', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // MongoDB sorts by rollNo ascending
+        const students = yield schema_js_1.FacultyModel.aggregate([
+            { $sort: { name: 1 } },
+            {
+                $group: {
+                    _id: "$subject",
+                    faculties: { $push: "$$ROOT" }
+                }
+            }
+        ]);
+        if (!students || students.length === 0) {
+            return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+        }
+        return res.status(200).json({ success: true, data: students });
+    }
+    catch (err) {
+        console.error('Error in get student:', err);
+        return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+    }
 }));

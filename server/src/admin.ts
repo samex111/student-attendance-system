@@ -224,7 +224,6 @@ AdminRouter.post('/add/subject', async(req:Request, res:Response)=>{
         code:z.string(),
         year:z.number(),
         sem:z.number(),
-        facultyId:z.string(),
         slot:z.number()
     })
       const parseData = requireBody.safeParse(req.body);
@@ -233,14 +232,13 @@ AdminRouter.post('/add/subject', async(req:Request, res:Response)=>{
             msg: "Error in adding student : " + parseData.error
         })
     }
-    const {name , code ,sem,  year, facultyId , slot} = parseData.data
+    const {name , code ,sem,  year,  slot} = parseData.data
     try{
         const response = await SubjectModel.create({
             name,
             code,
             sem,
             year,
-            facultyId,
             slot
         })
         res.status(200).json({
@@ -303,3 +301,53 @@ AdminRouter.post("/create/faculty", async (req:Request, res:Response)=>{
     
     });
     
+AdminRouter.get('/get/students', async (req: Request, res: Response) => {
+
+  try {
+    // MongoDB sorts by rollNo ascending
+   const students = await StudentModel.aggregate([
+  { $sort: { branch: 1, rollNo: 1 } },
+  {
+    $group: {
+      _id: "$branch",
+      students: { $push: "$$ROOT" }
+    }
+  }
+]);
+
+
+    if (!students || students.length === 0) {
+      return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+    }
+
+    return res.status(200).json({ success: true, data: students });
+  } catch (err: any) {
+    console.error('Error in get student:', err);
+    return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+  }
+});
+AdminRouter.get('/get/faculties', async (req: Request, res: Response) => {
+
+  try {
+    // MongoDB sorts by rollNo ascending
+   const students = await FacultyModel.aggregate([
+  { $sort: { name:1 } },
+  {
+    $group: {
+      _id: "$subject",
+      faculties: { $push: "$$ROOT" }
+    }
+  }
+]);
+
+
+    if (!students || students.length === 0) {
+      return res.status(404).json({ success: false, msg: 'No students found for this branch' });
+    }
+
+    return res.status(200).json({ success: true, data: students });
+  } catch (err: any) {
+    console.error('Error in get student:', err);
+    return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+  }
+});

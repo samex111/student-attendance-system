@@ -39,7 +39,6 @@ const SubjectSchema = new Schema({
    code: { type: String , reuired:true},
    sem: { type: Number, required:true },
    year: { type: Number, required: true },
-   facultyId: { type: Schema.Types.ObjectId, ref: "faculty", required:true },
    slot:{type:Number,required:true }
 })
 

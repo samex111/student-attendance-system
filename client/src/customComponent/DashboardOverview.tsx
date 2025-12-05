@@ -1,7 +1,14 @@
 import {  Card, CardHeader, CardTitle,  CardContent } from "@/components/ui/card";
 import { GraduationCap, Users, School } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function  DashboardOverview ()  {
+    const [studentData,setStudentData] = useState<any>([])
+    useEffect(()=>{
+       const data =  getStudents();
+       setStudentData(data)
+    },[])
+    console.log(studentData)
   return (
     <>
       <div className="flex items-center">
@@ -66,3 +73,31 @@ export default function  DashboardOverview ()  {
     </>
   );
 };
+
+  async function getStudents() {
+    try {
+      const res = await fetch(`http://localhost:3000/api/admin/get/students`,{
+        method:"GET",
+        headers:{'Content-Type':"application/json"},
+        credentials:"include"
+      })
+      const json = await res.json()
+
+      return await json.students
+    } catch (e) {
+      console.error("Error fetching students", e)
+    }
+  }
+  async function getFaculties() {
+    try {
+      const res = await fetch(`http://localhost:3000/api/admin/get/faculties`,{
+        method:"GET",
+        credentials:"include"
+      })
+      const json = await res.json()
+
+      return await json.students
+    } catch (e) {
+      console.error("Error fetching students", e)
+    }
+  }

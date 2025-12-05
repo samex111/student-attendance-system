@@ -150,6 +150,7 @@ facultyRouter.get('/get/student/:branch', facultyMiddleware,async (req: Request,
 
 
 
+
 facultyRouter.post('/attendance',facultyMiddleware, async(req:Request, res:Response)=>{
     
     const requireBody = z.object({
