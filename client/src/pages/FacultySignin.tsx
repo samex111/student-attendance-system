@@ -12,7 +12,7 @@ import { EyeOff } from 'lucide-react';
 export default function Signin() {
   const navigate = useNavigate()
 
-  const [identifier, setIdentifier] = useState("")
+  const [email, setemail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState('password')
@@ -23,7 +23,7 @@ export default function Signin() {
       const res = await fetch("http://localhost:3000/api/faculty/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifire: identifier, password: password }),
+        body: JSON.stringify({ email: email, password: password }),
         credentials: "include",
       })
         
@@ -32,7 +32,7 @@ export default function Signin() {
 
       if (res.ok) {
         alert("Signin successful ✅")
-        navigate("/dashboard")
+        navigate("/faculty/dashboard")
       } else {
         alert(data.msg || "Signin failed ❌")
       }
@@ -41,7 +41,7 @@ export default function Signin() {
       alert("Error during signin : " + e)
     } finally {
       setLoading(false)
-      console.log("identifire: ",identifier)
+      console.log("identifire: ",email)
     }
   }
 
@@ -56,16 +56,16 @@ export default function Signin() {
 
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="identifier">Username or Email</Label>
+            <Label htmlFor="email">Email</Label>
             <div className="relative">
               <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" /> 
               <Input
-                id="identifier"
+                id="email"
                 type="text"
-                placeholder="Enter your username or email"
+                placeholder="Enter your  email"
                 className="pl-10"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
+                value={email}
+                onChange={(e) => setemail(e.target.value)}
               />
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function Signin() {
           <Button
             onClick={handleSignIn}
             className="w-full"
-            disabled={loading || !identifier || !password}
+            disabled={loading || !email || !password}
           >
             {loading ? (
               <>

@@ -20,50 +20,48 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth_js_1 = require("./auth.js");
 const schema_js_1 = require("./schema.js");
-const crypto_1 = __importDefault(require("crypto"));
 dotenv_1.default.config();
 const JWT_FACULTY = process.env.JWT_FACULTY;
 exports.facultyRouter = (0, express_1.Router)();
-exports.facultyRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const requireBody = zod_1.default.object({
-        email: zod_1.default.email(),
-        password: zod_1.default.string().min(8).max(20),
-        subject: zod_1.default.string().array(),
-        firstName: zod_1.default.string(),
-        lastName: zod_1.default.string(),
-    });
-    const parseData = requireBody.safeParse(req.body);
-    if (!parseData.success) {
-        return res.status(400).json({
-            message: "Incorrect Format",
-            error: parseData.error
-        });
-    }
-    const { email, password, subject, firstName, lastName } = req.body;
-    const hassedPassword = yield bcryptjs_1.default.hash(password, 5);
-    const otp = crypto_1.default.randomInt(100000, 999999).toString();
-    try {
-        yield schema_js_1.FacultyModel.create({
-            email: email,
-            password: hassedPassword,
-            subject: subject,
-            firstName: firstName,
-            lastName: lastName,
-        });
-    }
-    catch (e) {
-        res.status(403).json({
-            msg: "user already exists",
-        });
-        console.log("error is --: ", e);
-    }
-    res.status(200).json({
-        msg: "User created successfully!"
-    });
-}));
+// facultyRouter.post('/signup',  async (req: Request, res: Response) => {
+//     const requireBody = z.object({
+//         email: z.email(),
+//         password: z.string().min(8).max(20),
+//         subject: z.string().array(),
+//         firstName: z.string(),
+//         lastName: z.string(),
+//     });
+//     const parseData = requireBody.safeParse(req.body);
+//     if (!parseData.success) {
+//         return res.status(400).json({
+//             message: "Incorrect Format",
+//             error: parseData.error
+//         })
+//     }
+//     const { email, password, subject , firstName , lastName} = req.body;
+//     const hassedPassword = await bcrypt.hash(password, 5);
+//     const otp = crypto.randomInt(100000, 999999).toString();
+//     try {
+//         await FacultyModel.create({
+//             email: email,
+//             password: hassedPassword,
+//             subject:subject,
+//             firstName:firstName,
+//             lastName:lastName,
+//         })
+//     } catch (e) {
+//         res.status(403).json({
+//             msg: "user already exists",
+//         })
+//         console.log("error is --: ", e)
+//     }
+//     res.status(200).json({
+//         msg: "User created successfully!"
+//     })
+// });
 exports.facultyRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requireBody = zod_1.default.object({
-        identifire: zod_1.default.string(),
+        email: zod_1.default.string(),
         password: zod_1.default.string().min(8)
     });
     const parseData = requireBody.safeParse(req.body);
@@ -102,7 +100,7 @@ exports.facultyRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, vo
         });
     }
 }));
-exports.facultyRouter.get('/get/student/:branch', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.facultyRouter.get('/get/student/:branch', auth_js_1.facultyMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { branch } = req.params;
     try {
         // MongoDB sorts by rollNo ascending

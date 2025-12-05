@@ -22,62 +22,62 @@ export const facultyRouter = Router();
 
 
 
-facultyRouter.post('/signup', async (req: Request, res: Response) => {
-    const requireBody = z.object({
-        email: z.email(),
-        password: z.string().min(8).max(20),
-        subject: z.string().array(),
-        firstName: z.string(),
-        lastName: z.string(),
-    });
+// facultyRouter.post('/signup',  async (req: Request, res: Response) => {
+//     const requireBody = z.object({
+//         email: z.email(),
+//         password: z.string().min(8).max(20),
+//         subject: z.string().array(),
+//         firstName: z.string(),
+//         lastName: z.string(),
+//     });
 
-    const parseData = requireBody.safeParse(req.body);
+//     const parseData = requireBody.safeParse(req.body);
 
-    if (!parseData.success) {
-        return res.status(400).json({
-            message: "Incorrect Format",
-            error: parseData.error
-        })
-    }
+//     if (!parseData.success) {
+//         return res.status(400).json({
+//             message: "Incorrect Format",
+//             error: parseData.error
+//         })
+//     }
 
-    const { email, password, subject , firstName , lastName} = req.body;
+//     const { email, password, subject , firstName , lastName} = req.body;
 
-    const hassedPassword = await bcrypt.hash(password, 5);
+//     const hassedPassword = await bcrypt.hash(password, 5);
 
-    const otp = crypto.randomInt(100000, 999999).toString();
+//     const otp = crypto.randomInt(100000, 999999).toString();
 
 
 
-    try {
-        await FacultyModel.create({
-            email: email,
-            password: hassedPassword,
-            subject:subject,
-            firstName:firstName,
-            lastName:lastName,
+//     try {
+//         await FacultyModel.create({
+//             email: email,
+//             password: hassedPassword,
+//             subject:subject,
+//             firstName:firstName,
+//             lastName:lastName,
           
-        })
+//         })
 
-    } catch (e) {
-        res.status(403).json({
-            msg: "user already exists",
+//     } catch (e) {
+//         res.status(403).json({
+//             msg: "user already exists",
 
-        })
-        console.log("error is --: ", e)
-    }
+//         })
+//         console.log("error is --: ", e)
+//     }
 
-    res.status(200).json({
-        msg: "User created successfully!"
-    })
+//     res.status(200).json({
+//         msg: "User created successfully!"
+//     })
 
-});
+// });
 
 
 
 facultyRouter.post('/signin', async (req: Request, res: Response) => {
 
     const requireBody = z.object({
-        identifire: z.string(),
+        email: z.string(),
         password: z.string().min(8)
     });
 
@@ -129,7 +129,7 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
 })
 
 
-facultyRouter.get('/get/student/:branch', async (req: Request, res: Response) => {
+facultyRouter.get('/get/student/:branch', facultyMiddleware,async (req: Request, res: Response) => {
   const { branch } = req.params;
 
   try {

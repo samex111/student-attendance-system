@@ -19,11 +19,10 @@ function App() {
             HI there
           </div>
         } />
-        <Route path="/signup" element={<SignUp />} />
+        {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route path="/admin/signup" element={<AdminSignUp />} />
         <Route path="/admin/signin" element={<AdminSignin />} />
         <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
-        <Route path="/signin" element={<Signin />} />
         <Route path="/signin" element={<Signin />} />
       </Routes>
     </BrowserRouter>

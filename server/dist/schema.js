@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StudentModel = exports.AdminModel = exports.FacultyModel = exports.AttendanceModel = exports.SubjectModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
-const ObjectId = mongoose_1.default.Types.ObjectId;
 const AdminSchema = new Schema({
     username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
@@ -17,15 +16,12 @@ const AdminSchema = new Schema({
     isVerified: { type: Boolean, default: false }
 });
 const FacultySchema = new Schema({
-    username: { type: String, unique: true, required: true },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     subject: [{ type: String, required: true }],
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    otp: String,
-    otpExpiry: Date,
-    isVerified: { type: Boolean, default: false }
+    subjectId: { type: Schema.Types.ObjectId, ref: "subject", required: true },
 });
 const StudentSchema = new Schema({
     firstName: { type: String, required: true },

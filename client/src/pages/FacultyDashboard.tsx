@@ -27,7 +27,11 @@ export default function FacultyDashboard() {
 
   async function getStudents() {
     try {
-      const res = await fetch(`http://localhost:3000/api/faculty/get/student/${branch}`)
+      const res = await fetch(`http://localhost:3000/api/faculty/get/student/${branch}`,{
+        method:"GET",
+        headers:{'Content-Type':"application/json"},
+        credentials:"include"
+      })
       const json = await res.json()
 
       setStudents(json.data) 
@@ -40,7 +44,10 @@ export default function FacultyDashboard() {
     getStudents()
   }, [branch])
 
+
+
   return (
+    <>
     <div className="p-6">
       <h1 className="text-2xl font-semibold mb-4">Faculty Dashboard</h1>
        <div className="w-64">
@@ -82,6 +89,7 @@ export default function FacultyDashboard() {
         </TableBody>
       </Table>
     </div>
+    </>
   )
 }
 

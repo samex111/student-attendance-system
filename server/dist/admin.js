@@ -221,3 +221,41 @@ exports.AdminRouter.post('/add/subject', (req, res) => __awaiter(void 0, void 0,
         });
     }
 }));
+exports.AdminRouter.post("/create/faculty", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const requireBody = zod_1.default.object({
+        email: zod_1.default.email(),
+        password: zod_1.default.string().min(8).max(20),
+        subject: zod_1.default.string().array(),
+        firstName: zod_1.default.string(),
+        lastName: zod_1.default.string(),
+        subjectId: zod_1.default.string()
+    });
+    const parseData = requireBody.safeParse(req.body);
+    if (!parseData.success) {
+        return res.status(400).json({
+            message: "Incorrect Format",
+            error: parseData.error
+        });
+    }
+    const { email, password, subject, firstName, lastName, subjectId } = req.body;
+    const hassedPassword = yield bcryptjs_1.default.hash(password, 5);
+    try {
+        yield schema_js_1.FacultyModel.create({
+            email: email,
+            password: hassedPassword,
+            subject: subject,
+            firstName: firstName,
+            lastName: lastName,
+            subjectId: subjectId
+        });
+    }
+    catch (e) {
+        res.status(403).json({
+            msg: "user already exists",
+        });
+        console.log("error is --: ", e);
+    }
+    res.status(200).json({
+        msg: "User created successfully!"
+    });
+}));
