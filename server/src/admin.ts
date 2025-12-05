@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import noadmailer from 'nodemailer';
-import { AdminModel, StudentModel } from "./schema.js";
+import { AdminModel, StudentModel, SubjectModel } from "./schema.js";
 import crypto from 'crypto';
 
 
@@ -178,6 +178,8 @@ AdminRouter.post('/signin', async (req: Request, res: Response) => {
     }
 })
 
+
+
 AdminRouter.post('/add/student',async(req:Request,res:Response)=>{
     const requireBody = z.object({
     firstName:z.string(),
@@ -212,6 +214,40 @@ AdminRouter.post('/add/student',async(req:Request,res:Response)=>{
     }catch(e){
         res.status(400).json({
             msg:"Eroor in catch adding student: "+e
+        })
+    }
+})
+AdminRouter.post('/add/subject', async(req:Request, res:Response)=>{
+    const requireBody = z.object({ 
+        name:z.string(),
+        code:z.string(),
+        year:z.number(),
+        sem:z.number(),
+        facultyId:z.string(),
+        slot:z.number()
+    })
+      const parseData = requireBody.safeParse(req.body);
+    if(!parseData.success){
+        return res.status(400).json({
+            msg: "Error in adding student : " + parseData.error
+        })
+    }
+    const {name , code ,sem,  year, facultyId , slot} = parseData.data
+    try{
+        const response = await SubjectModel.create({
+            name,
+            code,
+            sem,
+            year,
+            facultyId,
+            slot
+        })
+        res.status(200).json({
+            msg:"Subject created: " + response
+        })
+    }catch(e){
+        res.status(400).json({
+            msg:"Error in creating sunject: " + e
         })
     }
 })
