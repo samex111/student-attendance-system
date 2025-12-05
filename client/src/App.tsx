@@ -6,30 +6,64 @@ import Signin from './pages/FacultySignin'
 import AdminSignUp from './pages/AdminSignup'
 import AdminSignin from './pages/AdminSignin'
 import FacultyDashboard from './pages/FacultyDashboard'
-import Dashboard from './pages/AdminDashboard'
+import { Home } from 'lucide-react'
+import AddFaculty from './customComponent/AddFAculty'
+import { AddStudent } from './customComponent/AddStudent'
+import DashboardOverview from './customComponent/DashboardOverview'
+import AdminLayout from './layout/applayout'
+
 
 function App() {
- 
-
   return (
-    <>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={
-          <div>
-            HI there
-          </div>
-        } />
-        {/* <Route path="/signup" element={<SignUp />} /> */}
-        <Route path="/admin/signup" element={<AdminSignUp />} />
-        <Route path="/admin/signin" element={<AdminSignin />} />
-        <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
-        <Route path="/admin/dashboard" element={<Dashboard />} />
+        {/* Public Routes */}
+        <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
+        
+        {/* Admin Auth Routes */}
+        <Route path="/admin/signin" element={<AdminSignin />} />
+        <Route path="/admin/signup" element={<AdminSignUp />} />
+
+        {/* Faculty Routes */}
+        <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+
+        {/* Protected Admin Dashboard Routes (Wrapped in Layout) */}
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <AdminLayout>
+              <DashboardOverview />
+            </AdminLayout>
+          } 
+        />
+        <Route 
+          path="/admin/dashboard/add/student" 
+          element={
+            <AdminLayout>
+              <AddStudent />
+            </AdminLayout>
+          } 
+        />
+        <Route 
+          path="/admin/dashboard/add/faculty" 
+          element={
+            <AdminLayout>
+              <AddFaculty />
+            </AdminLayout>
+          } 
+        />
+        <Route 
+          path="/admin/dashboard/settings" 
+          element={
+            <AdminLayout>
+              <div className="flex items-center justify-center h-full text-zinc-400">Settings Page Placeholder</div>
+            </AdminLayout>
+          } 
+        />
       </Routes>
     </BrowserRouter>
-    </>
-  ) 
+  );
 }
 
-export default App
+export default App;
