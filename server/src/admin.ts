@@ -1,11 +1,12 @@
 import type { Request, Response } from "express";
+
 import { Router } from "express";
 import z from 'zod';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import noadmailer from 'nodemailer';
-import { AdminModel, StudentModel, SubjectModel } from "./schema.js";
+import { AdminModel, FacultyModel, StudentModel, SubjectModel } from "./schema.js";
 import crypto from 'crypto';
 
 
@@ -251,3 +252,54 @@ AdminRouter.post('/add/subject', async(req:Request, res:Response)=>{
         })
     }
 })
+
+AdminRouter.post("/create/faculty", async (req:Request, res:Response)=>{
+     const requireBody = z.object({
+            email: z.email(),
+            password: z.string().min(8).max(20),
+            subject: z.string().array(),
+            firstName: z.string(),
+            lastName: z.string(),
+            subjectId:z.string()
+        });
+    
+        const parseData = requireBody.safeParse(req.body);
+    
+        if (!parseData.success) {
+            return res.status(400).json({
+                message: "Incorrect Format",
+                error: parseData.error
+            })
+        }
+    
+        const { email, password, subject , firstName , lastName , subjectId} = req.body;
+    
+        const hassedPassword = await bcrypt.hash(password, 5);
+    
+    
+    
+    
+        try {
+            await FacultyModel.create({
+                email: email,
+                password: hassedPassword,
+                subject:subject,
+                firstName:firstName,
+                lastName:lastName,
+                subjectId:subjectId
+            })
+    
+        } catch (e) {
+            res.status(403).json({
+                msg: "user already exists",
+    
+            })
+            console.log("error is --: ", e)
+        }
+    
+        res.status(200).json({
+            msg: "User created successfully!"
+        })
+    
+    });
+    
