@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 import noadmailer from 'nodemailer';
 import { facultyMiddleware } from "./auth.js";
-import { FacultyModel, StudentModel } from "./schema.js";
+import { AttendanceModel, FacultyModel, StudentModel } from "./schema.js";
 import crypto from 'crypto';
 
 
@@ -177,16 +177,17 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
     }
 })
 
+
 facultyRouter.get('/get/student/:branch', async (req: Request, res: Response) => {
   const { branch } = req.params;
 
   try {
-    const students = await StudentModel.find({ branch });
+    // MongoDB sorts by rollNo ascending
+    const students = await StudentModel.find({ branch }).sort({ rollNo: 1 });
 
     if (!students || students.length === 0) {
       return res.status(404).json({ success: false, msg: 'No students found for this branch' });
     }
-
 
     return res.status(200).json({ success: true, data: students });
   } catch (err: any) {
@@ -195,3 +196,39 @@ facultyRouter.get('/get/student/:branch', async (req: Request, res: Response) =>
   }
 });
 
+
+
+
+facultyRouter.post('/attendance',facultyMiddleware, async(req:Request, res:Response)=>{
+    
+    const requireBody = z.object({
+        studentId : z.string(),
+        subjectId: z.string(),
+        status:  z.enum(["present","absent"])
+    }); 
+    const parsedData = requireBody.safeParse(req.body);
+    if (!parsedData.success) {
+        return res.status(400).json({
+            message: "Incorrect Format",
+            error: parsedData.error
+        });
+    }
+    const {studentId , subjectId , status} = parsedData.data;
+
+    try{
+        const response = await AttendanceModel.create({
+            studentId,
+            subjectId,
+            status
+        }) 
+
+        res.status(200).json({
+            response
+        })
+    }catch(e){
+        res.status(404).json({
+            msg:"error in posting attandance: "+e
+        })
+    }
+
+})

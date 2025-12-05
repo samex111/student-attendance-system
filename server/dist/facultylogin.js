@@ -35,7 +35,7 @@ exports.facultyRouter.post('/signup', (req, res) => __awaiter(void 0, void 0, vo
     const requireBody = zod_1.default.object({
         email: zod_1.default.email(),
         password: zod_1.default.string().min(8).max(20),
-        subject: zod_1.default.string(),
+        subject: zod_1.default.string().array(),
         firstName: zod_1.default.string(),
         lastName: zod_1.default.string(),
         username: zod_1.default.string().min(1).max(50)
@@ -154,8 +154,7 @@ exports.facultyRouter.get('/get/student/:branch', (req, res) => __awaiter(void 0
         if (!students || students.length === 0) {
             return res.status(404).json({ success: false, msg: 'No students found for this branch' });
         }
-        const data = students.map((i) => i.firstName);
-        return res.status(200).json({ success: true, data: data });
+        return res.status(200).json({ success: true, data: students });
     }
     catch (err) {
         console.error('Error in get student:', err);

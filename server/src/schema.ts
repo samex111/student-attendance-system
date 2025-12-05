@@ -30,6 +30,24 @@ const StudentSchema = new Schema({
     batch:{type:String, required:true},
     email: { type: String, unique: true, required: true }
 });
+const attendanceSchema = new Schema({
+  studentId: { type: Schema.Types.ObjectId, ref: "student-details", required: true },
+  subjectId: { type: Schema.Types.ObjectId, ref: "subject", required: true },
+  status: { type: String, enum: ["present", "absent"], required: true },
+  
+}, {timestamps:true});
+
+const SubjectSchema = new Schema({
+   name: { type: String, required: true },
+   code: { type: String , reuired:true},
+   sem: { type: Number, required:true },
+   year: { type: Number, required: true },
+   facultyId: { type: Schema.Types.ObjectId, ref: "faculty", required:true },
+   slot:{type:Number,required:true }
+})
+
+export const SubjectModel =  mongoose.model('subject',SubjectSchema);
+export const AttendanceModel =  mongoose.model('attendance',attendanceSchema);
 
 export const FacultyModel =  mongoose.model('faculty',FacultySchema);
 export const AdminModel =  mongoose.model('admin',AdminSchema);
