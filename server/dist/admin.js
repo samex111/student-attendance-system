@@ -186,3 +186,38 @@ exports.AdminRouter.post('/add/student', (req, res) => __awaiter(void 0, void 0,
         });
     }
 }));
+exports.AdminRouter.post('/add/subject', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const requireBody = zod_1.default.object({
+        name: zod_1.default.string(),
+        code: zod_1.default.string(),
+        year: zod_1.default.number(),
+        sem: zod_1.default.number(),
+        facultyId: zod_1.default.string(),
+        slot: zod_1.default.number()
+    });
+    const parseData = requireBody.safeParse(req.body);
+    if (!parseData.success) {
+        return res.status(400).json({
+            msg: "Error in adding student : " + parseData.error
+        });
+    }
+    const { name, code, sem, year, facultyId, slot } = parseData.data;
+    try {
+        const response = yield schema_js_1.SubjectModel.create({
+            name,
+            code,
+            sem,
+            year,
+            facultyId,
+            slot
+        });
+        res.status(200).json({
+            msg: "Subject created: " + response
+        });
+    }
+    catch (e) {
+        res.status(400).json({
+            msg: "Error in creating sunject: " + e
+        });
+    }
+}));

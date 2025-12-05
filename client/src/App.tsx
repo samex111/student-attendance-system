@@ -5,6 +5,7 @@ import SignUp from './pages/FacultySignup'
 import Signin from './pages/FacultySignin'
 import AdminSignUp from './pages/AdminSignup'
 import AdminSignin from './pages/AdminSignin'
+import FacultyDashboard from './pages/FacultyDashboard'
 
 function App() {
  
@@ -21,6 +22,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/admin/signup" element={<AdminSignUp />} />
         <Route path="/admin/signin" element={<AdminSignin />} />
+        <Route path="/faculty/dashboard" element={<FacultyDashboard />} />
+        <Route path="/signin" element={<Signin />} />
         <Route path="/signin" element={<Signin />} />
       </Routes>
     </BrowserRouter>

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentModel = exports.AdminModel = exports.FacultyModel = void 0;
+exports.StudentModel = exports.AdminModel = exports.FacultyModel = exports.AttendanceModel = exports.SubjectModel = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const Schema = mongoose_1.default.Schema;
 const ObjectId = mongoose_1.default.Types.ObjectId;
@@ -36,6 +36,21 @@ const StudentSchema = new Schema({
     batch: { type: String, required: true },
     email: { type: String, unique: true, required: true }
 });
+const attendanceSchema = new Schema({
+    studentId: { type: Schema.Types.ObjectId, ref: "student-details", required: true },
+    subjectId: { type: Schema.Types.ObjectId, ref: "subject", required: true },
+    status: { type: String, enum: ["present", "absent"], required: true },
+}, { timestamps: true });
+const SubjectSchema = new Schema({
+    name: { type: String, required: true },
+    code: { type: String, reuired: true },
+    sem: { type: Number, required: true },
+    year: { type: Number, required: true },
+    facultyId: { type: Schema.Types.ObjectId, ref: "faculty", required: true },
+    slot: { type: Number, required: true }
+});
+exports.SubjectModel = mongoose_1.default.model('subject', SubjectSchema);
+exports.AttendanceModel = mongoose_1.default.model('attendance', attendanceSchema);
 exports.FacultyModel = mongoose_1.default.model('faculty', FacultySchema);
 exports.AdminModel = mongoose_1.default.model('admin', AdminSchema);
 exports.StudentModel = mongoose_1.default.model('student-details', StudentSchema);

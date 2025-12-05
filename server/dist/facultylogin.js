@@ -19,6 +19,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const auth_js_1 = require("./auth.js");
 const schema_js_1 = require("./schema.js");
 const crypto_1 = __importDefault(require("crypto"));
 dotenv_1.default.config();
@@ -150,7 +151,8 @@ exports.facultyRouter.post('/signin', (req, res) => __awaiter(void 0, void 0, vo
 exports.facultyRouter.get('/get/student/:branch', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { branch } = req.params;
     try {
-        const students = yield schema_js_1.StudentModel.find({ branch });
+        // MongoDB sorts by rollNo ascending
+        const students = yield schema_js_1.StudentModel.find({ branch }).sort({ rollNo: 1 });
         if (!students || students.length === 0) {
             return res.status(404).json({ success: false, msg: 'No students found for this branch' });
         }
@@ -159,5 +161,35 @@ exports.facultyRouter.get('/get/student/:branch', (req, res) => __awaiter(void 0
     catch (err) {
         console.error('Error in get student:', err);
         return res.status(500).json({ success: false, msg: 'Error in get student: ' + (err.message || err) });
+    }
+}));
+exports.facultyRouter.post('/attendance', auth_js_1.facultyMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const requireBody = zod_1.default.object({
+        studentId: zod_1.default.string(),
+        subjectId: zod_1.default.string(),
+        status: zod_1.default.enum(["present", "absent"])
+    });
+    const parsedData = requireBody.safeParse(req.body);
+    if (!parsedData.success) {
+        return res.status(400).json({
+            message: "Incorrect Format",
+            error: parsedData.error
+        });
+    }
+    const { studentId, subjectId, status } = parsedData.data;
+    try {
+        const response = yield schema_js_1.AttendanceModel.create({
+            studentId,
+            subjectId,
+            status
+        });
+        res.status(200).json({
+            response
+        });
+    }
+    catch (e) {
+        res.status(404).json({
+            msg: "error in posting attandance: " + e
+        });
     }
 }));

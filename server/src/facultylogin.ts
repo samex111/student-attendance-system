@@ -4,7 +4,6 @@ import z from 'zod';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
-import noadmailer from 'nodemailer';
 import { facultyMiddleware } from "./auth.js";
 import { AttendanceModel, FacultyModel, StudentModel } from "./schema.js";
 import crypto from 'crypto';
@@ -20,24 +19,16 @@ export const facultyRouter = Router();
 
 
 
-const transporter = noadmailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASS
-    }
 
-});
 
 
 facultyRouter.post('/signup', async (req: Request, res: Response) => {
     const requireBody = z.object({
-      email: z.email(),
+        email: z.email(),
         password: z.string().min(8).max(20),
         subject: z.string().array(),
         firstName: z.string(),
         lastName: z.string(),
-        username: z.string().min(1).max(50)
     });
 
     const parseData = requireBody.safeParse(req.body);
@@ -49,7 +40,7 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
         })
     }
 
-    const { email, password, username , subject , firstName , lastName} = req.body;
+    const { email, password, subject , firstName , lastName} = req.body;
 
     const hassedPassword = await bcrypt.hash(password, 5);
 
@@ -60,13 +51,11 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
     try {
         await FacultyModel.create({
             email: email,
-            username: username,
             password: hassedPassword,
             subject:subject,
             firstName:firstName,
             lastName:lastName,
-            otp,
-            otpExpiry: Date.now() + 5 * 60 * 1000
+          
         })
 
     } catch (e) {
@@ -77,46 +66,12 @@ facultyRouter.post('/signup', async (req: Request, res: Response) => {
         console.log("error is --: ", e)
     }
 
-    await transporter.sendMail({
-        from: "samxpatel2@gmail.com",
-        to: email,
-        subject: "Verify your Email",
-        text: `Your OTP is ${otp}`
-    });
-
     res.status(200).json({
         msg: "User created successfully!"
     })
 
 });
-facultyRouter.post("/verify-otp", async (req, res) => {
-    const { email, otp } = req.body;
 
-    const user = await FacultyModel.findOne({ email });
-
-    if (!user) return res.status(400).json({ message: "User not found" });
-    //   if(user.isVerified === false){
-    //     return res.status(400).json({ message: "User not varified" });
-    //   }
-    if (user.otp !== otp) {
-        await user.deleteOne();
-        return res.status(400).json({ message: "Invalid OTP" });
-    }
-    // @ts-ignore
-    if (Date.now() > user.otpExpiry) {
-        user.deleteOne(email);
-        return res.status(400).json({ message: "OTP expired" });
-
-    }
-
-
-    user.isVerified = true;
-    user.otp = null; // OTP clear
-    user.otpExpiry = null;
-    await user.save();
-
-    res.json({ message: "Email verified successfully!" });
-});
 
 
 facultyRouter.post('/signin', async (req: Request, res: Response) => {
@@ -137,19 +92,15 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
 
 
 
-    const { identifire, password } = req.body;
+    const { email, password } = req.body;
 
-    const user = await FacultyModel.findOne({ $or: [{ username: identifire }, { email: identifire }] });
+    const user = await FacultyModel.findOne({email});
     if (!user || !user.password) {
         return res.status(403).json({
             message: "Incorrect Credentials !"
         });
     }
-    if (user.isVerified == false) {
-        return res.status(403).json({
-            message: "user not varified !"
-        });
-    }
+   
 
 
     const passwordMatch = await bcrypt.compare(password, user.password);
