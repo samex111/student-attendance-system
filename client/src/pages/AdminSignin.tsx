@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, Lock, Loader2, Eye, EyeOff, Key, Shield } from "lucide-react";
 import { toast, Toaster } from "sonner"; // Import Toaster for better UX
+import { Backend_URL } from "@/lib/config";
 
 export default function AdminSignin() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function AdminSignin() {
     setLoading(true);
     
     try {
-      const res = await fetch("http://localhost:3000/api/admin/signin", {
+      const res = await fetch(`${Backend_URL}/api/admin/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ identifier:identifier, password:password, secretkey:secretkey }),

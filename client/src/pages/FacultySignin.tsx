@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User, Lock, Loader2, Eye, EyeOff, School } from "lucide-react";
 import { toast, Toaster } from "sonner"; // Using Sonner for beautiful alerts
+import { Backend_URL } from "@/lib/config";
 
 export default function Signin() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function Signin() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/faculty/signin", {
+      const res = await fetch(`${Backend_URL}/api/faculty/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

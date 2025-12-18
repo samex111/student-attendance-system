@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label" // ✅ correct import (not from ra
 import { Eye, Mail, Key  } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
 import { User, Lock, Loader2 } from "lucide-react"
+import { Backend_URL } from "@/lib/config"
 
 
 
@@ -25,7 +26,7 @@ export default function AdminSignUp() {
   const handleSignup = async () => {
     setLoading(true)
     try {
-      const res = await fetch("http://localhost:3000/api/admin/signup", {
+      const res = await fetch(`${Backend_URL}/api/admin/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email:email, username:username, password:password , secretkey:secretkey }),
