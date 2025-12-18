@@ -130,16 +130,3 @@ export function Student(){
         </>
     )
   }
-  async function getFaculties() {
-    try {
-      const res = await fetch(`http://localhost:3000/api/admin/get/faculties`,{
-        method:"GET",
-        credentials:"include"
-      })
-      const json = await res.json()
-
-      return await json.students
-    } catch (e) {
-      console.error("Error fetching students", e)
-    }
-  }
