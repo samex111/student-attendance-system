@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 app.use(cookieParser());
 app.use(cors({
-   origin: "http://localhost:5173",   // frontend ka exact origin
+   origin: ["http://localhost:5173" , "https://student-attendance-system-h29f-7jz8c6goj-samex111s-projects.vercel.app/"],   // frontend ka exact origin
   credentials: true  ,
   methods: ["GET","DELETE","POST","PUT"],
    allowedHeaders: ["Content-Type"]
