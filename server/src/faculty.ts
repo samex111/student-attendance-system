@@ -92,7 +92,7 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
 
 
 
-    const { email, password } = req.body;
+    const { email, password } = parseData.data;
 
     const user = await FacultyModel.findOne({email});
     if (!user || !user.password) {

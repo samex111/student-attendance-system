@@ -6,13 +6,10 @@ import { ArrowRight, Briefcase, Wrench } from "lucide-react";
 
 import { Card, CardContent, CardHeader,CardFooter } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-// import AddFaculty from "@/customComponent/AddFAculty"; // Assuming this is not needed for the landing page itself
 
-// **Using a better logo placeholder structure**
 const AcropolisLogoComponent = () => (
     <div className="flex flex-col items-center">
-        {/* Placeholder for the official logo image (if you have the full URL) */}
-        {/* NOTE: I am keeping the structure of the provided image but making it cleaner */}
+        
         <img
             src="https://aitr.ac.in/wp-content/uploads/2023/03/unnamed-1-1536x304.png"
             alt="Acropolis Enlightening Wisdom"

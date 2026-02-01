@@ -25,9 +25,9 @@ export default function AdminLayout({ children }:any)  {
   const navigate = useNavigate();
 
   const isActive = (path: string) => location.pathname === path;
-``
+       `Sameer   patel`
   const sidebarContent = (
-    <div className="flex h-full flex-col gap-2">
+    <div className="flex h-full flex-col gap-2"> 
       <div className="flex h-[60px] items-center border-b px-6">
         <Link className="flex items-center gap-2 font-semibold" to="/">
           <School className="h-6 w-6" />
@@ -42,7 +42,7 @@ export default function AdminLayout({ children }:any)  {
             path="/admin/dashboard" 
             active={isActive('/admin/dashboard')} 
           />
-          <div className="my-2 text-xs font-semibold uppercase text-zinc-500 px-3">
+          <div className="my-2 text-xs font-semibold uppercase text-zinc-500 px-3 ">
             Management
           </div>
           <SidebarItem 
@@ -80,10 +80,10 @@ export default function AdminLayout({ children }:any)  {
           />
         </nav>
       </div>
-      <div className="mt-auto p-4 border-t">
+      <div className="mt-auto p-4 border-t ">
          <Button variant="ghost" className="w-full justify-start gap-2 text-red-600 hover:text-red-600 hover:bg-red-50" onClick={() => navigate('/')}>
             <LogOut className="h-4 w-4" />
-            Sign Out
+            Log Out
          </Button>
       </div>
     </div>
@@ -107,9 +107,9 @@ export default function AdminLayout({ children }:any)  {
             {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-zinc-500">prashantgeetesir@acropolis.in</span>
+            <span className="text-sm text-zinc-500">prashantgeete@acropolis.in</span>
             <div className="h-8 w-8 rounded-full bg-zinc-200 flex items-center justify-center">
-              <span className="font-semibold text-xs">AD</span>
+              <span className="font-semibold text-xs">PG</span>
             </div>
           </div>
         </header>
