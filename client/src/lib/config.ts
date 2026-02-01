@@ -1,1 +1,1 @@
-export const Backend_URL =  "http://localhost:3000"
+export const Backend_URL = import.meta.env.VITE_API_URL as string || 'http://localhost:3000';

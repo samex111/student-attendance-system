@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Check, X, Search, Save, UserCheck, Users, Loader2, ListOrdered, GraduationCap } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import { Backend_URL } from "@/lib/config";
 
 // --- Types (Kept as is) ---
 interface StudentProps {
@@ -120,7 +121,7 @@ export default function FacultyDashboard() {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/faculty/attendance`, {
+      const res = await fetch(`${Backend_URL}/api/faculty/attendance`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
