@@ -74,6 +74,7 @@ export default function BranchAttendance() {
     try {
       // Adjust URL to match your API route structure
       const res = await fetch(`${Backend_URL}/api/admin/students/attendance/${branchInput}`,{
+        headers:{'Content-type':"application/json"},
         credentials:"include"
       });
       const json = await res.json();

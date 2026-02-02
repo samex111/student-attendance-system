@@ -110,12 +110,13 @@ facultyRouter.post('/signin', async (req: Request, res: Response) => {
             id: user._id
         }, JWT_FACULTY)
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: false,
-            sameSite: "strict",
-            maxAge: 1000 * 60 * 60 * 24
-        })
+        
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 1000 * 60 * 60 * 24
+    })
         console.log("cookie: ", token)
         res.json({ studentId: user._id , subjectId:user.subjectId});
     }

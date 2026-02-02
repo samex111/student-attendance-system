@@ -72,6 +72,7 @@ export default function FacultyDashboard() {
     setFetching(true);
     try {
       const res = await fetch(`${Backend_URL}/api/faculty/get/student/${branch}`, {
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
       const json = await res.json();
@@ -213,46 +214,46 @@ export default function FacultyDashboard() {
               </Select>
             </div>
             <div className="flex w-full ">
-            <div className="grid w-full sm:w-[150px] items-center gap-1.5">
-              <label className="text-sm font-medium leading-none">Lecture Slot</label>
-              <Select value={slot} onValueChange={setSlot}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Slot" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">Slot 1</SelectItem>
-                  <SelectItem value="2">Slot 2</SelectItem>
-                  <SelectItem value="3">Slot 3</SelectItem>
-                  <SelectItem value="4">Slot 4</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid w-full sm:w-[150px] items-center gap-1.5">
-              <label className="text-sm font-medium leading-none">BATCH</label>
+              <div className="grid w-full sm:w-[150px] items-center gap-1.5">
+                <label className="text-sm font-medium leading-none">Lecture Slot</label>
+                <Select value={slot} onValueChange={setSlot}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Slot" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">Slot 1</SelectItem>
+                    <SelectItem value="2">Slot 2</SelectItem>
+                    <SelectItem value="3">Slot 3</SelectItem>
+                    <SelectItem value="4">Slot 4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid w-full sm:w-[150px] items-center gap-1.5">
+                <label className="text-sm font-medium leading-none">BATCH</label>
 
-              <Select
-                value={batch || "ALL"}   // ✅ yahan ALL fallback
-                onValueChange={(value) => {
-                  if (value === "ALL") {
-                    setBatch("");       // ✅ real unselect yahan hota hai
-                  } else {
-                    setBatch(value as "B1" | "B2");
-                  }
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="All Batches" />
-                </SelectTrigger>
+                <Select
+                  value={batch || "ALL"}   // ✅ yahan ALL fallback
+                  onValueChange={(value) => {
+                    if (value === "ALL") {
+                      setBatch("");       // ✅ real unselect yahan hota hai
+                    } else {
+                      setBatch(value as "B1" | "B2");
+                    }
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Batches" />
+                  </SelectTrigger>
 
-                <SelectContent>
-                  {/* ✅ EMPTY STRING HATA DIYA */}
-                  <SelectItem value="ALL">All Batches</SelectItem>
-                  <SelectItem value="B1">BATCH 1</SelectItem>
-                  <SelectItem value="B2">BATCH 2</SelectItem>
-                </SelectContent>
-              </Select>
+                  <SelectContent>
+                    {/* ✅ EMPTY STRING HATA DIYA */}
+                    <SelectItem value="ALL">All Batches</SelectItem>
+                    <SelectItem value="B1">BATCH 1</SelectItem>
+                    <SelectItem value="B2">BATCH 2</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-    </div>
 
           </div>
         </CardContent>
