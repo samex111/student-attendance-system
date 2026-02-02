@@ -2,7 +2,7 @@
 
 A full-stack **Attendance Management System** designed for educational institutes to manage students, faculty, attendance, and academic data with role-based access.
 
-Live Demo: https://attendance-system-sameer.vercel.app
+Live Demo: https://attendace-system-sameer.vercel.app
 
 ---
 
