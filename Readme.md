@@ -37,6 +37,10 @@ Click below to watch the full demo of the project:
 
 https://github.com/samex111/student-attendance-system/tree/main/client/public/attendance-system-video.mp4
 
+## 🎥 Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/vHB6i9vB8r4/0.jpg)](https://www.youtube.com/watch?v=vHB6i9vB8r4)
+
 
 ## 🛠 Tech Stack
 
