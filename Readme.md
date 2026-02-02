@@ -66,6 +66,16 @@ https://github.com/samex111/student-attendance-system/tree/main/client/public/at
 
 ## ⚙️ Installation & Setup
 
-### 1️⃣ Clone the repository
+### 1️. Clone the repository
 ```bash
 git clone https://github.com/samex111/student-attendance-system.git
+
+2. Frontend setup
+cd client
+npm install
+npm run dev
+
+3. Backewnd setup 
+cd server
+npm install
+npm run dev
