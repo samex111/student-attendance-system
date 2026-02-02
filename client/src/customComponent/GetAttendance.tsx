@@ -28,6 +28,7 @@ import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Search, AlertCircle, BookOpen, GraduationCap, BarChart3 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Backend_URL } from "@/lib/config";
 
 // --- Types based on your Backend Response ---
 interface SubjectStat {
@@ -72,7 +73,7 @@ export default function BranchAttendance() {
 
     try {
       // Adjust URL to match your API route structure
-      const res = await fetch(`http://localhost:3000/api/admin/students/attendance/${branchInput}`,{
+      const res = await fetch(`${Backend_URL}/api/admin/students/attendance/${branchInput}`,{
         credentials:"include"
       });
       const json = await res.json();

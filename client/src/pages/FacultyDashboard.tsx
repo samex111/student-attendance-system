@@ -71,7 +71,7 @@ export default function FacultyDashboard() {
   async function fetchStudents() {
     setFetching(true);
     try {
-      const res = await fetch(`http://localhost:3000/api/faculty/get/student/${branch}`, {
+      const res = await fetch(`${Backend_URL}/api/faculty/get/student/${branch}`, {
         credentials: "include",
       });
       const json = await res.json();
